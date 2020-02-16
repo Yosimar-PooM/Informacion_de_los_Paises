@@ -98,8 +98,8 @@ public class InformacionPais extends AppCompatActivity implements Asynchtask {
                 .add(p1, p2, p3, p4, p5)
                 .strokeColor(Color.parseColor("#7B1FA2"))
                 .fillColor(Color.argb(32, 156, 39, 176)));
-          //nivel de zoom
+          //nivel de zoom aplicado en el contexto
         mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(latitud, longitud), 5));
+                new LatLng(latitud, longitud), 4));
     }
 }
