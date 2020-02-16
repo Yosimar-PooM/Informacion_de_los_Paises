@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -13,7 +14,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,18 +30,15 @@ import WebServices.WebService;
 public class InformacionPais extends AppCompatActivity implements Asynchtask {
 
     private ImageView imgbandera;
-    private TextView txtcodigo;
     private TextView txtpais;
     private TextView txtcapital;
 
 
     private double latitud, longitud;
-    public LatLng posMapa;
     private String norte;
     private String sur;
     private String oeste;
     private String este;
-    private String codigo;
 
     private GoogleMap mapa;
     @Override
@@ -83,23 +82,24 @@ public class InformacionPais extends AppCompatActivity implements Asynchtask {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mapa = googleMap;
-                posMapa = new LatLng(latitud,longitud);
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(posMapa, 5);
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitud, longitud), 5);
                 mapa.moveCamera(cameraUpdate);
                 DiseñoMarco();
             }
         });
     }
     public void DiseñoMarco(){
-        PolylineOptions marco = new PolylineOptions()
-                .add(new LatLng(Double.parseDouble(norte),Double.parseDouble(oeste)))
-                .add(new LatLng(Double.parseDouble(norte),Double.parseDouble(este)))
-                .add(new LatLng(Double.parseDouble(sur),Double.parseDouble(este)))
-                .add(new LatLng(Double.parseDouble(sur),Double.parseDouble(oeste)))
-                .add(new LatLng(Double.parseDouble(norte),Double.parseDouble(oeste)));
+        LatLng p1 = new LatLng(Double.parseDouble(norte), Double.parseDouble(oeste));
+        LatLng p2 = new LatLng(Double.parseDouble(norte), Double.parseDouble(este));
+        LatLng p3 = new LatLng(Double.parseDouble(sur), Double.parseDouble(este));
+        LatLng p4 = new LatLng(Double.parseDouble(sur), Double.parseDouble(oeste));
+        LatLng p5 = new LatLng(Double.parseDouble(norte), Double.parseDouble(oeste));
+        Polygon marco = mapa.addPolygon(new PolygonOptions()
+                .add(p1, p2, p3, p4, p5)
+                .strokeColor(Color.parseColor("#7B1FA2"))
+                .fillColor(Color.argb(32, 156, 39, 176)));
 
-        marco.width(10);
-        marco.color(Color.BLUE);
-        mapa.addPolyline(marco);
+        mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(latitud, longitud), 5));
     }
 }
