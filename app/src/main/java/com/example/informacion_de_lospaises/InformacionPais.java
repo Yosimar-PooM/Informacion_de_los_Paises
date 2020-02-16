@@ -100,6 +100,6 @@ public class InformacionPais extends AppCompatActivity implements Asynchtask {
                 .fillColor(Color.argb(32, 156, 39, 176)));
           //nivel de zoom aplicado en el contexto de informacion
         mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(latitud, longitud), 4));
+                new LatLng(latitud, longitud), 5));
     }
 }
